@@ -1,20 +1,33 @@
 name: Check Counter test 
 on:
- pull_request:
-  branches:
-   - develop
+  pull_request:
+    branches:
+      - develop
+
 jobs:
- test:
-  name: Check the Counter
-  runs-on: ubuntu-latest
-  steps:
-   - uses: actions/checkout@v3
-   - uses: subosito/flutter-action@v2.3.0
-     with:
-      flutter-version: '3.29.3'
-   - name: Install packages
-     run: flutter pub get
-   - name: Linter
-     run: flutter analyze
-   - name: Test
-     run: flutter test
+  test:
+    name: Check the Counter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - uses: subosito/flutter-action@v2.3.0
+        with:
+          flutter-version: '3.29.3'
+
+      - name: Install packages
+        run: flutter pub get
+
+      - name: Linter
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
