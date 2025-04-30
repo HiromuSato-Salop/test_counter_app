@@ -11,20 +11,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:test_counter_app/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Fibonacci counter increments correctly', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // 初期状態を確認（最初の値は 1）
+    expect(find.text('1'), findsOneWidget);
+    expect(find.text('2'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
+    // 1回タップ → 1 + 1 = 2
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
+    expect(find.text('2'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // 2回目のタップ → 1 + 2 = 3
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    expect(find.text('3'), findsOneWidget);
+
+    // 3回目のタップ → 2 + 3 = 5
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    expect(find.text('5'), findsOneWidget);
+
+    // 4回目のタップ → 3 + 5 = 8
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    expect(find.text('8'), findsOneWidget);
   });
 }
